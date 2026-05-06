@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 Demo: Drag & Drop, Geolocation, Web Storage</title>
+<style> body {
+font-family: Arial, sans-serif;
+background: linear-gradient(45deg, #ff7e5f, #feb47b); color: white;
+display: flex;
+justify-content: center; align-items: center; height: 100vh; margin: 0;
+text-align: center;
+ 
+}
+.container {
+background: rgba(0, 0, 0, 0.5); padding: 20px;
+border-radius: 10px; width: 80%;
+max-width: 600px;
+}
+h1 {
+font-size: 2.5em;
+}
+#dropZone {
+border: 2px dashed white; padding: 30px;
+margin: 20px 0; min-height: 150px; text-align: center;
+}
+.message {
+font-size: 1.2em; margin-top: 20px;
+}
+#location {
+font-size: 1.4em; margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>HTML5 Features Demo</h1>
+
+<!-- Drag & Drop Area -->
+<div id="dropZone" ondrop="drop(event)" ondragover="allowDrop(event)">
+<p>Drag something here!</p>
+</div>
+ 
+
+<!-- Geolocation and Web Storage Message -->
+<div class="message">
+<button onclick="getLocation()">Get Your Location</button>
+</div>
+
+<div id="location"></div>
+
+<div class="message">
+<button onclick="clearStorage()">Clear Stored Location</button>
+</div>
+</div>
+
+<script>
+// Drag and Drop Functions function allowDrop(event) { event.preventDefault();
+}
+
+function drop(event) { event.preventDefault();
+var data = event.dataTransfer.getData("text");
+var droppedElement = document.createElement("div"); droppedElement.textContent = "You dropped: " + data; document.getElementById("dropZone").appendChild(droppedElement);
+}
+
+// Geolocation and Web Storage Functions function getLocation() {
+if (navigator.geolocation) { navigator.geolocation.getCurrentPosition(function(position) { const lat = position.coords.latitude;
+const lon = position.coords.longitude;
+const locationMessage = `Latitude: ${lat}, Longitude: ${lon}`;
+
+// Show the location on the page
+ 
+document.getElementById("location").textContent = locationMessage;
+
+// Store the location in localStorage localStorage.setItem('userLocation', locationMessage);
+});
+} else {
+document.getElementById("location").textContent = "Geolocation is not supported by this browser.";
+}
+}
+
+// Retrieve stored location if available window.onload = function() {
+const storedLocation = localStorage.getItem('userLocation'); if (storedLocation) {
+document.getElementById("location").textContent = "Stored Location: " + storedLocation;
+}
+}
+
+// Clear the stored location function clearStorage() {
+localStorage.removeItem('userLocation'); document.getElementById("location").textContent = "Location cleared!";
+}
+</script>
+</body>
+</html>
